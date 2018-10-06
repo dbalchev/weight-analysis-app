@@ -1,34 +1,25 @@
 import React, { Component } from 'react';
-import { authorize } from './googleutils';
 import {Link} from 'react-router-dom';
 
 class NotLoggedApp extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            gapi: null,
-            disabled: true,
             files: [],
         }
-        authorize().then((gapi)=> {
-            this.setState({
-                disabled: false,
-                gapi
-            })
-        })
+        console.log(this.props.google)
     }
     signIn() {
         console.log('sign in')
-        this.state.gapi.auth2.getAuthInstance().signIn();
+        this.props.google.authInstance.signIn();
     }
-    listFiles() {
-        this.state.gapi.client.drive.files.list({
+    async listFiles() {
+        const listResults = await this.props.google.drive.files.list({
             q: "mimeType='application/vnd.google-apps.spreadsheet'",
             fields: "nextPageToken, files(id, name)",
-        }).then(listResults => {
-            this.setState({
-                files: listResults.result.files
-            })
+        })
+        this.setState({
+            files: listResults.result.files
         })
     }
     render() {

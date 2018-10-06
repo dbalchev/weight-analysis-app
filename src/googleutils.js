@@ -1,35 +1,6 @@
-// import {OAuth2Client}  from 'google-auth-library';
 import { clientId, apiKey } from './googleapikeys';
-
-// console.log(GoogleAuth)
-const google = {}
-// const google = GoogleApis();
 const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly https://www.googleapis.com/auth/drive.metadata.readonly';
-
-const googleConfig = {
-  clientId, 
-  redirect:  window.location.href + '/logged'
-};
-
-/**
- * Create the google auth object which gives us access to talk to google's apis.
- */
-// function createConnection() {
-//   return new OAuth2Client(
-//     googleConfig.clientId,
-//     googleConfig.clientSecret,
-//     googleConfig.redirect
-//   );
-// }
-
-// export function authorize() {
-//     const oAuth2Client = createConnection()
-//     const authUrl = oAuth2Client.generateAuthUrl({
-//         access_type: 'offline',
-//         scope: SCOPES,
-//       });
-//     return authUrl
-// }
+const DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4", "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"]
 
 function loadScript(url, callback){
 
@@ -54,31 +25,44 @@ function loadScript(url, callback){
   document.getElementsByTagName("head")[0].appendChild(script);
 }
 
+class GoogleApiService {
+  constructor(gapi) {
+    this.gapi = gapi
+  }
+  get authInstance() {
+    return this.gapi.auth2.getAuthInstance()
+  }
+  get drive() {
+    return this.gapi.client.drive
+  }
+  get spreadsheets() {
+    return this.gapi.client.sheets.spreadsheets
+  }
+}
 
-export function authorize() {
+
+function initAuthorization(gapi, resolve, reject) {
+  function gapiLoaded() {
+    console.log('loaded')
+    gapi.client.init({
+      apiKey,
+      clientId,
+      scope: SCOPES,
+      discoveryDocs: DISCOVERY_DOCS
+    }).then(function () {
+      resolve(new GoogleApiService(gapi))
+    }, function(x) {
+      reject(x)
+    })
+  }
+  gapi.load('client:auth2', gapiLoaded)
+}
+
+export function initGoogle() {
   return new Promise(function(resolve, reject) {
     function scriptLoaded() {
       const gapi = window.gapi
-      function gapiLoaded() {
-        console.log('loaded')
-        gapi.client.init({
-          apiKey,
-          clientId,
-          scope: SCOPES,
-          discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4", "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"]
-        }).then(function () {
-          console.log('inited')
-          const authInstance = gapi.auth2.getAuthInstance()
-          console.log('authInstance', authInstance)
-          resolve(gapi)
-        }, function(x) {
-          console.log(window.sessionStorage)
-          console.log('failed!!', x)
-        })
-        console.log('init called')
-      }
-      console.log('loading auth')
-      gapi.load('client:auth2', gapiLoaded)
+      initAuthorization(gapi, resolve, reject)
     }
     loadScript('https://apis.google.com/js/api.js', scriptLoaded);
   })

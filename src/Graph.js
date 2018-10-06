@@ -4,7 +4,6 @@ class Graph extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            gapi: window.gapi,
             data: []
         }
         this.loadData()
@@ -20,7 +19,7 @@ class Graph extends Component {
         </div>)
     }
     async loadData() {
-        const response = await this.state.gapi.client.sheets.spreadsheets.values.get({
+        const response = await this.props.google.spreadsheets.values.get({
             spreadsheetId: this.spreadsheetId,
             range: 'A1:B'})
         this.setState({
