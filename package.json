@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "google-auth-library": "^2.0.0",
+    "googleapis": "^33.0.0",
+    "gtoken": "^2.3.0",
+    "lodash": "^4.17.11",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-router": "^4.3.1",
