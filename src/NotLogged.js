@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { authorize } from './googleutils';
+import {Link} from 'react-router-dom';
 
 class NotLoggedApp extends Component {
     constructor(props) {
@@ -39,7 +40,9 @@ class NotLoggedApp extends Component {
                 <input type="button" value="sign in" disabled={this.state.disabled} onClick={() => this.signIn()}/>
                 <input type="button" value="list files" onClick={() => this.listFiles()}/>
                 <ul>
-                    {this.state.files.map(file => <li key={file.id}>{file.name + ' ' + file.id}</li>)}
+                    {this.state.files.map(file => (
+                        <li key={file.id}><Link to={`graph/${file.id}`}> {file.name}</Link></li>)
+                    )}
                 </ul>
             </div>
         )

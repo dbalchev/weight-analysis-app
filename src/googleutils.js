@@ -1,5 +1,5 @@
 // import {OAuth2Client}  from 'google-auth-library';
-import { clientId, clientSecret, apiKey } from './googleapikeys';
+import { clientId, apiKey } from './googleapikeys';
 
 // console.log(GoogleAuth)
 const google = {}
@@ -8,7 +8,6 @@ const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly https://ww
 
 const googleConfig = {
   clientId, 
-  clientSecret,
   redirect:  window.location.href + '/logged'
 };
 
