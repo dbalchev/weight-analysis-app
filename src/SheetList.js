@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 
-class NotLoggedApp extends Component {
+class SheetList extends Component {
     constructor(props) {
         super(props)
         this.state = {
             files: [],
         }
-        console.log(this.props.google)
-    }
-    signIn() {
-        console.log('sign in')
-        this.props.google.authInstance.signIn();
+        this.listFiles();
     }
     async listFiles() {
         const listResults = await this.props.google.drive.files.list({
@@ -23,13 +19,10 @@ class NotLoggedApp extends Component {
         })
     }
     render() {
-        console.log(this.state.files)
         return (
             <div>
-                You're *NOT* Logged
+                These are your files. Click on one to visualize it
                 <br/>
-                <input type="button" value="sign in" disabled={this.state.disabled} onClick={() => this.signIn()}/>
-                <input type="button" value="list files" onClick={() => this.listFiles()}/>
                 <ul>
                     {this.state.files.map(file => (
                         <li key={file.id}><Link to={`graph/${file.id}`}> {file.name}</Link></li>)
@@ -40,4 +33,4 @@ class NotLoggedApp extends Component {
     }
 }
 
-export default NotLoggedApp;
+export default SheetList;

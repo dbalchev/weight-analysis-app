@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Logged from './Logged';
 import Graph from './Graph';
-import NotLogged from './NotLogged';
+import SheetList from './SheetList';
 import registerServiceWorker from './registerServiceWorker';
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import {initGoogle} from './googleutils'
 
 
@@ -32,9 +31,9 @@ class MainComponent extends Component {
         return (
             <BrowserRouter>
                 <Switch>
-                    <Route exact path='/' render={this.renderComponent(NotLogged)}/>
-                    <Route exact path='/logged' render={this.renderComponent(Logged)}/>
+                    <Route exact path='/list' render={this.renderComponent(SheetList)}/>
                     <Route exact path='/graph/:spreadsheetId' render={this.renderComponent(Graph)}/>
+                    <Redirect from="/" to="list" />
                 </Switch>
             </BrowserRouter>
         )
