@@ -9,8 +9,8 @@ function loadScript(url, callback){
 
   if (script.readyState){  //IE
       script.onreadystatechange = function(){
-          if (script.readyState == "loaded" ||
-                  script.readyState == "complete"){
+          if (script.readyState === "loaded" ||
+                  script.readyState === "complete"){
               script.onreadystatechange = null;
               callback();
           }
@@ -43,7 +43,6 @@ class GoogleApiService {
 
 function initAuthorization(gapi, resolve, reject) {
   function gapiLoaded() {
-    console.log('loaded')
     gapi.client.init({
       apiKey,
       clientId,

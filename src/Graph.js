@@ -25,7 +25,6 @@ class Graph extends Component {
         this.setState({
             data: response.result.values,
         })
-        console.log(response)
     }
 }
 
