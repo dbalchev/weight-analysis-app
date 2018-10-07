@@ -1,4 +1,4 @@
-import { clientId, apiKey } from './googleapikeys';
+import { clientId  } from './googleapikeys';
 const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly https://www.googleapis.com/auth/drive.metadata.readonly';
 const DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4", "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"]
 
@@ -44,7 +44,6 @@ class GoogleApiService {
 function initAuthorization(gapi, resolve, reject) {
   function gapiLoaded() {
     gapi.client.init({
-      apiKey,
       clientId,
       scope: SCOPES,
       discoveryDocs: DISCOVERY_DOCS
