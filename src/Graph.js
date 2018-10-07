@@ -66,9 +66,7 @@ class Graph extends Component {
     }
     render() {
         return (
-            <div>
-                this is the graph for {this.spreadsheetId}
-                <br/>
+            <div className='card'>
                 <ScatterPlot data={this.state.data} minDate={this.state.minDate}/>
             </div>)
     }

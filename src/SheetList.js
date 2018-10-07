@@ -20,14 +20,23 @@ class SheetList extends Component {
     }
     render() {
         return (
-            <div>
-                These are your files. Click on one to visualize it
-                <br/>
-                <ul>
+            <div className='card'>
+                <p>
+                    These are your Google Sheet files. Click on the file you want to visualize.
+                </p>
+                <p>
+                    Currently we only support sheets where the A column is the date
+                    and the B column is the weight (where A1 and B1 are headers)
+                </p>
+                <div className='smallCardContainer'>
                     {this.state.files.map(file => (
-                        <li key={file.id}><Link to={`graph/${file.id}`}> {file.name}</Link></li>)
+                        <Link key={file.id} to={`graph/${file.id}`}>
+                            <div  className='smallCard'>
+                                {file.name}
+                            </div>
+                        </Link>)
                     )}
-                </ul>
+                </div>
             </div>
         )
     }

@@ -40,26 +40,47 @@ class MainComponent extends Component {
     }
     render() {
         if (this.state.google === null) {
-            return (<div> Please, wait a bit untill Google loads</div>)
+            return (
+                <div className='card'> 
+                    <p>
+                        Please, wait a bit untill Google API loads. Thanks!
+                    </p>
+                    <p>
+                        If this message lingers for too long check if your third party cookies are disabled.
+                    </p>
+                    <p>
+                        TODO: make this app work without third party cookies
+                    </p>
+                </div>)
         }
         if (!this.state.loggedIn) {
             return (
-                <input type="button" value="sign in" disabled={this.state.disabled} 
-                    onClick={() => this.state.google.authInstance.signIn()}/>
+                <div className='card'>
+                    <p>
+                        In order to use this app you'll need to log into your Google Account.
+                    </p>
+                    <p>
+                        This app will need read-only access to your Google Drive (to list the sheets files) and
+                        Google Sheets (to view the file with your weight history).
+                    </p>
+                    <br/>
+                    <input type="button" value="Sign in into Google" disabled={this.state.disabled} 
+                        onClick={() => this.state.google.authInstance.signIn()}/>
+                </div>
             )
         }
         return (
-            <div>
-                <div>
-                <input type="button" value="sign out" disabled={this.state.disabled} 
+            <div className='absoluteContainer'>
+                <input type="button" value="Sign out of Google" disabled={this.state.disabled} 
+                    className='moveToRight'
                     onClick={() => this.state.google.authInstance.signOut()}/>
+                <br/>
+                <div>
                 </div>
                 {this.renderLoggedInComponents()}
             </div>
         )
     }
-
-
 }
 
 ReactDOM.render(

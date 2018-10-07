@@ -1,5 +1,50 @@
 body {
-  margin: 0;
-  padding: 0;
+  margin: auto;
   font-family: sans-serif;
+  background-color: #888;
+  max-width: 50em;
+}
+
+.absolutContainer {
+  position: absolute
+}
+
+.card {
+  padding: 2em;
+  margin-top: 2em;
+  background-color: #ccc;
+  border-radius: 0.25em;
+  line-height: 150%;
+  box-shadow: 0.1em 0.1em 0.5em;
+}
+
+.smallCardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.smallCardContainer > a:link {
+  color: inherit;
+}
+
+.smallCard {
+  padding: 0.5em;
+  margin: 0.5em;
+  background-color: #ccc;
+  border-radius: 0.25em;
+  line-height: 150%;
+  width: 15em;
+  box-shadow: 0.1em 0.1em 0.5em;
+  /* display: inline-block; */
+}
+
+.moveToRight {
+  position: absolute;
+  right: 0;
+}
+
+input {
+  border-radius: 0.5em;
+  background-color: #eee;
 }

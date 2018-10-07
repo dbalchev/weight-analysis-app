@@ -11,9 +11,9 @@ export class ScatterPlot extends Component {
         const points = data.map(d => {return {x: d.daysSinceMinDate, y: d.reading}})
         const lines = data.map(d => {return {x: d.daysSinceMinDate, y: d.smooth}})
         return (
-            <div style={{ position: 'absolute' }}>
-
+            <div>
                 <ResponsiveXYFrame points={points} xAccessor={'x'} yAccessor={'y'} 
+                    responsiveWidth={true}
                     axes={[
                         { orient: 'left', key: 'yAxis'},
                         { orient: 'bottom', key: 'xAxis', tickFormat: d => this.formatDate(d),
