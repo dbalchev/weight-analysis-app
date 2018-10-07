@@ -7,6 +7,22 @@ function serialNumberToMoment(serialNumber) {
     return moment('1899-12-30').add(serialNumber, 'days')
 }
 
+function addSmoothData(data, alpha) {
+    const memory = []
+    data.forEach(x => memory[x.daysSinceMinDate] = x)
+
+    let smooth = memory[0].reading
+    memory[0].smooth = smooth
+    for (let i = 1; i < memory.length; ++i) {
+        if (memory[i]) {
+            smooth = (1 - alpha) * smooth + alpha * memory[i].reading
+            memory[i].smooth = smooth
+        }
+    }
+    return data
+}
+
+
 function preprocessData(data){
     data = data.map(([serialNumber, value]) => [serialNumberToMoment(serialNumber), value])
     const {minDate, maxDate} = data.reduce(({minDate, maxDate}, [curDate, _]) => {
@@ -28,6 +44,7 @@ function preprocessData(data){
             daysSinceMinDate: moment.duration(curDate.diff(minDate)).asDays(),
         }
     })
+    data = addSmoothData(data, 0.33)
     return {
         data,
         minDate,
