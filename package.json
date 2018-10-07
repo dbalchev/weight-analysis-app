@@ -2,6 +2,7 @@
   "name": "weight-analysis-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://dbalchev.github.io/weight-analysis-app",
   "dependencies": {
     "gh-pages": "^2.0.1",
     "google-auth-library": "^2.0.0",
