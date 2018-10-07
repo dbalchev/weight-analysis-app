@@ -29,10 +29,10 @@ class MainComponent extends Component {
     }
     renderLoggedInComponents() {
         return (
-            <BrowserRouter>
+            <BrowserRouter basename={process.env.PUBLIC_URL}>
                 <Switch>
-                    <Route exact path='/list' render={this.renderComponent(SheetList)}/>
-                    <Route exact path='/graph/:spreadsheetId' render={this.renderComponent(Graph)}/>
+                    <Route path='/list' render={this.renderComponent(SheetList)}/>
+                    <Route path='/graph/:spreadsheetId' render={this.renderComponent(Graph)}/>
                     <Redirect from="/" to="list" />
                 </Switch>
             </BrowserRouter>
