@@ -3,16 +3,13 @@ import {ResponsiveXYFrame} from 'semiotic'
 
 export class ScatterPlot extends Component {
     render() {
-        const data = this.props.data
-        if (data.length === 0) {
-            //TODO fix refreshing when we change the data
-            return (<div/>)
-        }
+        const data = this.data
         const points = data.map(d => {return {x: d.daysSinceMinDate, y: d.reading}})
         const lines = data.map(d => {return {x: d.daysSinceMinDate, y: d.smooth}})
         return (
             <div>
-                <ResponsiveXYFrame points={points} xAccessor={'x'} yAccessor={'y'} 
+                <ResponsiveXYFrame points={points} xAccessor={'x'} yAccessor={'y'}
+                    dataVersion={this.dataVersion}
                     responsiveWidth={true}
                     axes={[
                         { orient: 'left', key: 'yAxis'},
@@ -30,6 +27,12 @@ export class ScatterPlot extends Component {
     }
     formatDate(d) {
         return this.props.minDate.clone().add(d, 'days').format('L')
+    }
+    get data() {
+        return this.props.data
+    }
+    get dataVersion() {
+        return undefined
     }
 }
 export default ScatterPlot;
