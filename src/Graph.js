@@ -23,7 +23,7 @@ function addSmoothData(data, alpha) {
 }
 
 
-function preprocessData(data){
+function preprocessData(data, smoothingAlpha){
     data = data.map(([serialNumber, value]) => [serialNumberToMoment(serialNumber), value])
     const {minDate, maxDate} = data.reduce(({minDate, maxDate}, [curDate, _]) => {
         if (minDate === null) {
@@ -44,7 +44,7 @@ function preprocessData(data){
             daysSinceMinDate: moment.duration(curDate.diff(minDate)).asDays(),
         }
     })
-    data = addSmoothData(data, 0.33)
+    data = addSmoothData(data, smoothingAlpha)
     return {
         data,
         minDate,
@@ -57,7 +57,8 @@ class Graph extends Component {
         super(props)
         this.state = {
             data: [],
-            minDate: null
+            smoothingAlpha: 0.33,
+            loadedSheetId: 'null'
         }
         this.loadData()
     }
@@ -65,9 +66,26 @@ class Graph extends Component {
         return this.props.match.params.spreadsheetId
     }
     render() {
+
+        const {minDate, data} = (
+            (this.state.data.length > 0) ?
+            preprocessData(
+                this.state.data.slice(1), this.state.smoothingAlpha) : 
+            {minDate: moment(), data: []})
         return (
             <div className='card'>
-                <ScatterPlot data={this.state.data} minDate={this.state.minDate}/>
+                <ScatterPlot data={data} minDate={minDate} dataVersion={this.dataVersion}/>
+                <div className='smallCardContainer'>
+                    <div className='smallCard'>
+                        <fieldset>
+                            <label for='alpha'>Smoothing alpha</label>
+                            <input type="range" name="alpha" min="0" max="1" step="0.01" 
+                                value={this.state.smoothingAlpha} onChange={e => this.changeAlpha(e)}/>
+                            <input value={this.state.smoothingAlpha}
+                                onChange={e => this.changeAlpha(e)}/>
+                        </fieldset>
+                    </div>
+                </div>
             </div>)
     }
     async loadData() {
@@ -76,10 +94,18 @@ class Graph extends Component {
             range: 'A1:B',
             valueRenderOption: 'UNFORMATTED_VALUE',
             dateTimeRenderOption: 'SERIAL_NUMBER'})
-        const {minDate, data} = preprocessData(response.result.values.slice(1))
         this.setState({
-            data, minDate
+            data: response.result.values,
+            loadedSheetId: this.spreadsheetId
         })
+    }
+    changeAlpha(event) {
+        this.setState({
+            smoothingAlpha: event.target.value,
+        })
+    }
+    get dataVersion() {
+        return `${this.spreadsheetId};${this.smoothingAlpha}`
     }
 }
 

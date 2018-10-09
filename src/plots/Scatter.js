@@ -32,7 +32,7 @@ export class ScatterPlot extends Component {
         return this.props.data
     }
     get dataVersion() {
-        return undefined
+        return this.props.dataVersion
     }
 }
 export default ScatterPlot;
