@@ -58,7 +58,8 @@ class Graph extends Component {
         this.state = {
             data: [],
             smoothingAlpha: 0.33,
-            loadedSheetId: 'null'
+            loadedSheetId: 'null',
+            lastNMeasurements: 0,
         }
         this.loadData()
     }
@@ -66,12 +67,16 @@ class Graph extends Component {
         return this.props.match.params.spreadsheetId
     }
     render() {
-
-        const {minDate, data} = (
+        const sliceStart = (
+            this.state.lastNMeasurements > 0 ?
+            -this.state.lastNMeasurements:
+            0)
+        let {minDate, data} = (
             (this.state.data.length > 0) ?
             preprocessData(
                 this.state.data.slice(1), this.state.smoothingAlpha) : 
             {minDate: moment(), data: []})
+        data = data.slice(sliceStart)
         return (
             <div className='card'>
                 <ScatterPlot data={data} minDate={minDate} dataVersion={this.dataVersion}/>
@@ -83,6 +88,13 @@ class Graph extends Component {
                                 value={this.state.smoothingAlpha} onChange={e => this.changeAlpha(e)}/>
                             <input value={this.state.smoothingAlpha}
                                 onChange={e => this.changeAlpha(e)}/>
+                        </fieldset>
+                    </div>
+                    <div className='smallCard'>
+                        <fieldset>
+                            <label for='lastNMeasurements'>Show data for # measurements (0 - show all)</label>
+                            <input value={this.state.lastNMeasurements} name='lastNMeasurements'
+                                onChange={e => this.setState({lastNMeasurements: parseInt(e.target.value)})}/>
                         </fieldset>
                     </div>
                 </div>
@@ -105,7 +117,7 @@ class Graph extends Component {
         })
     }
     get dataVersion() {
-        return `${this.spreadsheetId};${this.smoothingAlpha}`
+        return `${this.state.loadedSheetId};${this.state.smoothingAlpha};${this.state.lastNMeasurements}`
     }
 }
 
