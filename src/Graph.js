@@ -4,7 +4,7 @@ import * as moment from 'moment';
 
 
 function serialNumberToMoment(serialNumber) {
-    return moment('1899-12-30').add(serialNumber, 'days')
+    return moment('1899-12-30T00:00:00Z').utc().add(serialNumber, 'days')
 }
 
 function addSmoothData(data, alpha) {
