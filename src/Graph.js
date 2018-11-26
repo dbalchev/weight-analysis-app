@@ -83,7 +83,7 @@ class Graph extends Component {
                 <div className='smallCardContainer'>
                     <div className='smallCard'>
                         <fieldset>
-                            <label for='alpha'>Smoothing alpha</label>
+                            <label htmlFor='alpha'>Smoothing alpha</label>
                             <input type="range" name="alpha" min="0" max="1" step="0.01" 
                                 value={this.state.smoothingAlpha} onChange={e => this.changeAlpha(e)}/>
                             <input value={this.state.smoothingAlpha}
@@ -92,7 +92,7 @@ class Graph extends Component {
                     </div>
                     <div className='smallCard'>
                         <fieldset>
-                            <label for='lastNMeasurements'>Show data for # measurements (0 - show all)</label>
+                            <label htmlFor='lastNMeasurements'>Show data for # measurements (0 - show all)</label>
                             <input value={this.state.lastNMeasurements} name='lastNMeasurements'
                                 onChange={e => this.setState({lastNMeasurements: parseInt(e.target.value)})}/>
                         </fieldset>
